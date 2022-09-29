@@ -56,6 +56,7 @@ const DOMitems = document.querySelector('#items');
 const DOMcarrito = document.querySelector('#carrito');
 const DOMtotal = document.querySelector('#total');
 const DOMbotonVaciar = document.querySelector('#boton-vaciar');
+const miLocalStorage = window.localStorage;
 
 function renderizarProductos() {
     baseDeDatos.forEach((info) => {
@@ -85,11 +86,13 @@ function renderizarProductos() {
         DOMitems.appendChild(miNodo);
     });
 }
+
 function anyadirProductoAlCarrito(evento) {
     carrito.push(evento.target.getAttribute('marcador'))
     renderizarCarrito();
-
+    guardarCarritoEnLocalStorage();
 }
+
 function renderizarCarrito() {
     DOMcarrito.textContent = '';
     const carritoSinDuplicados = [...new Set(carrito)];
@@ -114,12 +117,15 @@ function renderizarCarrito() {
     });
     DOMtotal.textContent = calcularTotal();
 }
+
 function borrarItemCarrito(evento) {
     const id = evento.target.dataset.item;
     carrito = carrito.filter((carritoId) => {
         return carritoId !== id;
     });
     renderizarCarrito();
+    guardarCarritoEnLocalStorage();
+
 }
 function calcularTotal() {
     return carrito.reduce((total, item) => {
@@ -132,12 +138,21 @@ function calcularTotal() {
 function vaciarCarrito() {
     carrito = [];
     renderizarCarrito();
+    localStorage.clear();
+
+}
+function guardarCarritoEnLocalStorage () {
+    miLocalStorage.setItem('carrito', JSON.stringify(carrito));
+}
+function cargarCarritoDeLocalStorage () {
+    if (miLocalStorage.getItem('carrito') !== null) {
+        carrito = JSON.parse(miLocalStorage.getItem('carrito'));
+    }
 }
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
-
 DOMbotonVaciar.addEventListener('click', () => {
     swal("Carrito vacio");
     })
-
+cargarCarritoDeLocalStorage();
 renderizarProductos();
 renderizarCarrito();
