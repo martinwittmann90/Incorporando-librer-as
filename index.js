@@ -351,3 +351,12 @@ btnguardo.addEventListener("click", (e) => {
               }})
           .catch((error) => {
               console.log('Oops... ' + error);});}); */
+
+              btnguardo.addEventListener('click', () => {
+                swal({
+                  title: "Ya estas participando!",
+                  text: "Tus resultados han sido guardados!",
+                  icon: "success",
+                });
+                })
+            

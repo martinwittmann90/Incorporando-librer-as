@@ -122,7 +122,6 @@ function borrarItemCarrito(evento) {
     renderizarCarrito();
 }
 function calcularTotal() {
-    // Recorremos el array del carrito 
     return carrito.reduce((total, item) => {
         const miItem = baseDeDatos.filter((itemBaseDatos) => {
             return itemBaseDatos.id === parseInt(item);
@@ -135,5 +134,10 @@ function vaciarCarrito() {
     renderizarCarrito();
 }
 DOMbotonVaciar.addEventListener('click', vaciarCarrito);
+
+DOMbotonVaciar.addEventListener('click', () => {
+    swal("Carrito vacio");
+    })
+
 renderizarProductos();
 renderizarCarrito();
